@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <title>Feature Demo</title>
+        <style type="text/css">
+            /* Main site body */
+            .wrapper {
+                /* width: 100%; */
+                margin: 0 auto;
+                position: relative;
+                /* Ensure absolute positioned child elements are relative to this*/
+            }
+
+            /* Absolute positioned wrapper for the element you want to fix position */
+            .fixed-wrapper {
+                width: 100%;
+                position: absolute;
+                top: 9px;
+                left: 9px;
+            }
+
+            /* The element you want to fix the position of */
+            .fixed {
+                /* width: 220px; */
+                position: fixed;
+                background-color: blue;
+                height: 40px;
+                /* Do not set top / left! */
+            }
+
+            #cntnr {
+                /* height: 3000px; */
+                height: 95vh;
+                border: 10px solid purple;
+                background-color: rgb(255, 0, 0);
+            }
+
+            #progress {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                width: 75%;
+                height: 40px;
+            }
+        </style>
+        <script type="application/javascript">
+            function getPercent() {
+                return ((document.scrollingElement.scrollTop + document.scrollingElement.clientHeight) / (document.scrollingElement.scrollHeight + 5) * 100).toFixed(2) + "%";
+            }
+            function getWidth() {
+                return (((document.scrollingElement.scrollTop / (document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight)) * (document.getElementById("cntnr").clientWidth + 19.6)).toFixed(2) + "px");
+            }
+            function getColorCode() {
+                return "#" + (Math.round((Math.round(document.scrollingElement.scrollTop) / (document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight)) * 16777215).toString(16));
+            }
+            function getGreen() {
+                var pgrs = (Math.round(document.scrollingElement.scrollTop) / (document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight)) * 510;
+                if (pgrs > 255) {
+                    var diff = pgrs - 255;
+                    var green = "rgb(" + diff + ",255," + diff + ")";
+                } else {
+                    var green = "rgb(0," + pgrs + ",0)";
+                }
+                return green;
+            }
+            function getRGB() {
+                var color;
+                var pgrs = (Math.round(document.scrollingElement.scrollTop) / (document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight)) * 1536;
+                switch (true) {
+                case pgrs < 256:
+                    // green++ to rgb(255,255,0);
+                    var g = pgrs;
+                    if (g > 255) {
+                        g = 255
+                    }
+                    color = "rgb(255," + g + ",0)";
+                    break;
+                case pgrs >= 256 && pgrs < 512:
+                    //red-- to rgb(0,255,0);
+                    var rem = pgrs % 256;
+                    if (rem == 0) {
+                        color = "rgb(0,255,0)";
+                    } else {
+                        var r = 256 - rem;
+                        if (r > 255) {
+                            r = 255
+                        }
+                        color = "rgb(" + r + ",255,0)";
+                    }
+                    break;
+                case pgrs >= 512 && pgrs < 768:
+                    //blue++ to rgb(0,255,255);
+                    var b = pgrs % 256;
+                    if (b > 255) {
+                        b = 255
+                    }
+                    color = "rgb(0,255," + b + ")";
+                    break;
+                case pgrs >= 768 && pgrs < 1024:
+                    //green-- to rgb(0,0,255);
+                    var rem = pgrs % 256;
+                    if (rem == 0) {
+                        color = "rgb(0,0,255)";
+                    } else {
+                        var g = 256 - rem;
+                        if (g > 255) {
+                            g = 255
+                        }
+                        color = "rgb(0," + g + ",255)";
+                    }
+                    break;
+                case pgrs >= 1024 && pgrs < 1280:
+                    //red++ to rgb(255,0,255);
+                    var r = pgrs % 256;
+                    if (r > 255) {
+                        r = 255
+                    }
+                    color = "rgb(" + r + ",0,255)";
+                    break;
+                case pgrs >= 1280:
+                    //blue-- to rgb(255,0,0);
+                    var rem = pgrs % 256;
+                    if (rem == 0) {
+                        color = "rgb(255,0,0)";
+                    } else {
+                        var b = 256 - rem;
+                        if (b > 255) {
+                            b = 255
+                        }
+                        color = "rgb(255,0," + b + ")";
+                    }
+                    break;
+                }
+                console.log(color);
+                return color;
+            }
+            function setRGB(pgrs) {
+                var color;
+                switch (true) {
+                case pgrs < 256:
+                    // green++ to rgb(255,255,0);
+                    var g = pgrs;
+                    if (g > 255) {
+                        g = 255
+                    }
+                    color = "rgb(255," + g + ",0)";
+                    break;
+                case pgrs >= 256 && pgrs < 512:
+                    //red-- to rgb(0,255,0);
+                    var rem = pgrs % 256;
+                    if (rem == 0) {
+                        color = "rgb(0,255,0)";
+                    } else {
+                        var r = 256 - rem;
+                        if (r > 255) {
+                            r = 255
+                        }
+                        color = "rgb(" + r + ",255,0)";
+                    }
+                    break;
+                case pgrs >= 512 && pgrs < 768:
+                    //blue++ to rgb(0,255,255);
+                    var b = pgrs % 256;
+                    if (b > 255) {
+                        b = 255
+                    }
+                    color = "rgb(0,255," + b + ")";
+                    break;
+                case pgrs >= 768 && pgrs < 1024:
+                    //green-- to rgb(0,0,255);
+                    var rem = pgrs % 256;
+                    if (rem == 0) {
+                        color = "rgb(0,0,255)";
+                    } else {
+                        var g = 256 - rem;
+                        if (g > 255) {
+                            g = 255
+                        }
+                        color = "rgb(0," + g + ",255)";
+                    }
+                    break;
+                case pgrs >= 1024 && pgrs < 1280:
+                    //red++ to rgb(255,0,255);
+                    var r = pgrs % 256;
+                    if (r > 255) {
+                        r = 255
+                    }
+                    color = "rgb(" + r + ",0,255)";
+                    break;
+                case pgrs >= 1280:
+                    //blue-- to rgb(255,0,0);
+                    var rem = pgrs % 256;
+                    if (rem == 0) {
+                        color = "rgb(255,0,0)";
+                    } else {
+                        var b = 256 - rem;
+                        if (b > 255) {
+                            b = 255
+                        }
+                        color = "rgb(255,0," + b + ")";
+                    }
+                    break;
+                }
+                console.log(color);
+                document.getElementById("cntnr").style.backgroundColor = color;
+            }
+            var iter = 0;
+            document.addEventListener("DOMContentLoaded", ()=>{
+                document.getElementsByClassName("wrapper")[0].style.width = document.getElementById("cntnr").clientWidth;
+                document.getElementById("bar").style.width = getWidth();
+                var interval = setInterval(function(){
+                    document.getElementById("bar").style.width = ((iter / 1536) * (document.getElementById("cntnr").clientWidth + 10.6).toFixed(2)).toString() + "px";
+                    setRGB(iter);
+                    iter++;
+                    if(iter > 1535){
+                        iter = 0;
+                    }
+                },5);
+                document.addEventListener("scroll", ()=>{
+                    document.getElementById("bar").style.width = getWidth();
+                    document.getElementById("cntnr").style.backgroundColor = getRGB();
+                });
+
+            });
+        </script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="fixed-wrapper">
+                <div class="fixed" id="bar"></div>
+            </div>
+        </div>
+        <div id="cntnr"></div>
+    </body>
+</html>
